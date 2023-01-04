@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-left"><a href="index.html">tiktok</a>
+        <ul class="navlogo">
+            <li><i class="bi bi-bell-fill"></i></li>
+            <li><i class="bi bi-chat-heart-fill"></i></li>
+            <li><i class="bi bi-bookmark-plus-fill"></i></li>
+        </ul>
+    </div>
+    <div class="nav-right">
+        <div class="search-box">
+            <img src="images/search.png" alt="">
+            <input type="text" placeholder="Search">
+        </div><div id="postAvatar"><img src=""></div>
+        <!--        nut dang ky dang nhap-->
+        <div id="action">
+            <button onclick="dieuHuong()" class="logSign">Sign Up</button>
+            <button onclick="dieuHuonglog()" class="logSign">Sign In</button>
+
+        </div>
+        <button id="currentUser"></button>
+        <button id="out" onclick="logout()">LOG OUT</button>
+    </div>
+
+</nav>
+<div class="upload-btn-wrapper">
+    <input type="file" value="upload" name="myfile" id="fileButton">
+    <button class="btn">Chose</button>
+</div>
+<button onclick="avatar()">Change</button>
+
+
+</div>
+
+
+
+<!--thong tin ca nhan-->
+<div class="thonTinCaNhan">
+    <div id="showImg"></div>
+
+
+</div>
+
+
+</body>
+
+<script>
+    let listAvatar = JSON.parse(localStorage.getItem('list_avatar'));
+    if (listAvatar == null) {
+        listAvatar = [];
+    }
+
+    function showlistAvatar() {
+        let drawA = '';
+        for (let i = 0; i < listAvatar.length; i++) {
+if (listAvatar==[]){
+    drawA += `<img src="${listAvatar[i].avatarImg}">`
+}else {
+
+    drawA += `<img src="${listAvatar[i].avatarImg}">`
+}
+
+        }
+        document.getElementById('postAvatar').innerHTML = drawA;
+        document.getElementById('showImg').innerHTML=drawA;
+    }
+    listAvatar.shift();
+    showlistAvatar();
+
+    function avatar() {
+        let ava = new Avatar();
+        ava.avatarImg = getImage();
+        listAvatar.push(ava);
+
+        localStorage.setItem('list_avatar', JSON.stringify(listAvatar));
+        showlistAvatar();
+    }
+    let currentUser = localStorage.getItem("nameKey")
+    if (currentUser) {
+        document.getElementById("currentUser").innerText = currentUser + '';
+        document.getElementById('action').style.display = "none";
+    } else {
+        document.getElementById("currentUser").style.display = "none";
+        document.getElementById('profile').style.display = 'none';
+        document.getElementById('out').style.display = 'none';
+        document.getElementById('postAvatar').style.display='none'
+
+    }
+
+    function logout() {
+        localStorage.removeItem("nameKey")
+        localStorage.removeItem("idKey")
+        location.href = "index.html"
+    }
+
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script src="modal/Avatar.js"></script>
+<script src="modal/api.js"></script>
+</html>
